@@ -1,7 +1,13 @@
 ansible-hosts
 =============
 
-A MongoDB driven Ansible (https://github.com/ansible/ansible) hosts inventory.  The goal of this project is to provide a set of scripts/apps to populate, manage and query a MongoDB database for use as a hosts inventory for Ansible.
+A MongoDB driven Ansible (https://github.com/ansible/ansible) hosts inventory.  The goal of this project is to provide a set of scripts/apps to populate, manage and query a MongoDB database for use as a hosts inventory for Ansible.  ansible-hosts can currently import data from the following sources:
+
+- puppet-dashboard
+
+In the future, I'd also like to support the following sources:
+
+- zabbix
 
 dependancies
 ============
