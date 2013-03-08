@@ -10,7 +10,7 @@ In the future, I'd also like to support the following sources:
 
 - zabbix
 
-Dependancies
+Dependencies
 ============
 
 At the very least, ansible-hosts requires a MongoDB database to be online and accessible.  In order to populate it from sources like puppet-dashboard or zabbix, remote access to those databases will be required as well.  And since ansilbe talks json, python-json will be required on the hosts that will be executing these scripts.
