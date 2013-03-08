@@ -27,6 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import sys
 import logging
 import os
+import itertools
 from pymongo import Connection
 from ConfigParser import SafeConfigParser
 
@@ -69,10 +70,20 @@ def update(collection, all_hosts):
     """Update the database to include each host supplied"""
     log.debug("in update")
 
+    cursor = collection.find({'_id': 'all_hosts'})
+
+    current_hosts = []
+    for d in cursor:
+        current_hosts = itertools.chain(current_hosts, d['hosts'])
+
+    complete_list = itertools.chain(current_hosts, all_hosts)
+
+    final_host_list = dict(zip(complete_list, complete_list)).keys()
+
     collection.update(
         {'_id': 'all_hosts'}, 
         {"$set": {
-            'hosts': all_hosts,
+            'hosts': final_host_list,
             'groups': ''
             }
         },
