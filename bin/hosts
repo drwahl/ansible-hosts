@@ -67,15 +67,28 @@ def configure():
     col = con[database][collection]
     return col
 
-def get_hosts_from_group(local_collection, group_name):
+def get_hosts_from_group(allGroups, addedGroups, groupName):
     """Return a list of all hosts from the supplied group it's suplimental groups"""
-    log.debug("in get_host_from_group(%s, %s)" % (local_collection, group_name))
-
-    for group in local_collection:
-        if group['_id'] == group_name:
-            hostlist = group['hosts']
-
-    return hostlist
+    log.debug("in get_host_from_group(%s, %s)" % (allGroups, groupName))
+    
+    hosts = []
+    
+    group = {}
+    for g in allGroups:
+        if g['_id'] == groupName:
+            group = g
+    
+    if not group:
+        return []    
+    
+    hosts.extend(group['hosts'])
+    
+    for subGroup in group['groups']: 
+        if subGroup not in addedGroups:
+            addedGroups.append(subGroup)
+            hosts.extend(get_hosts_from_group(allGroups, addedGroups, subGroup))
+   
+    return hosts
 
 def hostlist(collection):
     """Grab all hosts/groups from the MongoDB"""
@@ -92,18 +105,12 @@ def hostlist(collection):
     hostlistdict = {}
     for group in all_documents:
         hostlistdict[group['_id']] = []
-
+    
     #populate the groups with hosts, tracking only 1 layer of groupings deep
     for group in all_documents:
-        current_host_list = get_hosts_from_group(all_documents, group['_id'])
-        hosts = filter(None, current_host_list)
-        for associated_group in group['groups']:
-            for next_group in all_documents:
-                if associated_group in next_group['_id']:
-                    hosts = itertools.chain(hosts, next_group['hosts'])
-
-        #remove empty strings
+        hosts = get_hosts_from_group(all_documents, [], group['_id'])
         hosts = filter(None, hosts)
+
         hostlistdict[group['_id']] = hosts
 
     return hostlistdict
