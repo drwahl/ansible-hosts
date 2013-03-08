@@ -29,7 +29,6 @@ import logging
 import os
 from pymongo import Connection
 import json
-import itertools
 from ConfigParser import SafeConfigParser
 
 parser = SafeConfigParser()
