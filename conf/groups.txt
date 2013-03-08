@@ -1,0 +1,25 @@
+{
+'qa-foos': {
+	'hosts': [
+		'foo01.qa01.example.com',
+		'foo02.qa01.example.com',
+		'foo01.qa02.example.com'
+	],
+	'groups': []
+},
+'prod-foos': {
+	'hosts': [
+		'foo01.prod.example.com',
+		'foo02.prod.example.com',
+	],
+	'groups': []
+},
+'foos': {
+	'hosts': [],
+	'groups': [
+		'corp-foos',
+		'prod-foos'
+	]
+},
+}
+
