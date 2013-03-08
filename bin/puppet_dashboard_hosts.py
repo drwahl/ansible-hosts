@@ -35,7 +35,7 @@ def list_hosts(conn):
     """List all hosts in the dabatase"""
 
     #conduct our query
-    conn.query("select name from nodes")
+    conn.query("SELECT name FROM nodes")
     result = conn.store_result()
     #store our results locally
     raw_result = result.fetch_row(maxrows=0)
