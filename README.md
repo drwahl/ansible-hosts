@@ -24,7 +24,7 @@ Grouping hosts
 ==============
 
 Hosts can be grouped by providing a flat file formatted as a python dictionary describing the groups and the hosts which are contained within.  For example, to create 2 groups each with 3 hosts:
-
+```
 {
 'group1': {
           hosts: [
@@ -43,11 +43,11 @@ Hosts can be grouped by providing a flat file formatted as a python dictionary d
           groups: []
 }
 }
-
+```
 Groups can also contain other groups, but currently this will only be traversed one relation deep.  In other words, if groupA includes groupB, and groupB includes groupC, when you expand groupA, you will only get the hosts in groupA and groupB.  This is not a design goal but simple the current state of things.
 
 Below is a host grouping example:
-
+```
 {
 'groupA': {
           hosts: [
@@ -73,3 +73,4 @@ Below is a host grouping example:
                   ]
 }
 }
+```
