@@ -75,7 +75,6 @@ def update(collection, all_hosts):
     for d in cursor:
         current_hosts = current_hosts + d['hosts']
 
-    print current_hosts
     complete_list = current_hosts + all_hosts
 
     final_host_list = dict(zip(complete_list, complete_list)).keys()
