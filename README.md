@@ -95,7 +95,7 @@ zabbix
 Similar to puppet-dashboard, ansible-hosts needs to be able to contact the zabbix database (likely remotely).  A user must exist in the database for ansible to use and that user must have select privs on the table zabbix.hosts. Use the following sql to create a user with these privileges;
 ```
 create user 'ansible';
-grant select on zabbix.hosts';
+grant select on 'zabbix.hosts' to 'ansible';
 flush privileges;
 ```
 The exact query that is being run against this database is:
