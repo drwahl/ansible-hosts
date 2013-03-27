@@ -44,7 +44,7 @@ Hosts can be grouped by providing a flat file formatted as a python dictionary d
 }
 }
 ```
-Groups can also contain other groups, but currently this will only be traversed one relation deep.  In other words, if groupA includes groupB, and groupB includes groupC, when you expand groupA, you will only get the hosts in groupA and groupB.  This is not a design goal but simple the current state of things.
+Groups can also contain other groups.
 
 Below is a host grouping example:
 ```
