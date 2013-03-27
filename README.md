@@ -7,6 +7,10 @@ A MongoDB driven Ansible (https://github.com/ansible/ansible) hosts inventory.  
 - zabbix
 - puppet-dashboard
 
+In the future, I'd like to support the following inventory systems:
+
+- cobbler
+
 
 Dependencies
 ============
