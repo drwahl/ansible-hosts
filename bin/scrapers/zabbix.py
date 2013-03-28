@@ -3,7 +3,6 @@
 import MySQLdb
 import sys
 import os
-import json
 import argparse
 from ConfigParser import SafeConfigParser
 
