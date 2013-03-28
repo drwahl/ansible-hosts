@@ -17,6 +17,8 @@ Dependencies
 
 At the very least, ansible-hosts requires a MongoDB database to be online and accessible.  In order to populate it from sources like puppet-dashboard or zabbix, remote access to those databases will be required as well.  And since ansilbe talks json, python-json will be required on the hosts that will be executing these scripts.
 
+In order for hosts (ansible "clients") to make use of this as an executable hosts file, the clients need at least json and also urllib2 or pymongo python modules.  If using urllib2 (REST API), the MongoDB instance will need to have REST services enabled.
+
 Loading data
 ============
 
