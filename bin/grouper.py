@@ -42,14 +42,15 @@ mongodb_host = parser.get('ansible-hosts', 'host')
 dbname = parser.get('ansible-hosts', 'database')
 collection_name = parser.get('ansible-hosts', 'collection')
 
-logging.basicConfig(level=logging.WARN,
-                    format='%(asctime)s %(levelname)s - %(message)s',
-                    datefmt='%y.%m.%d %H:%M:%S'
-                   )
+logging.basicConfig(
+    level=logging.WARN,
+    format='%(asctime)s %(levelname)s - %(message)s',
+    datefmt='%y.%m.%d %H:%M:%S')
 console = logging.StreamHandler(sys.stderr)
 console.setLevel(logging.WARN)
 logging.getLogger("ansible_mongo_hosts").addHandler(console)
 log = logging.getLogger("ansible_mongo_hosts")
+
 
 def configure():
     """Read configuration file and intialize connection to the mongodb instance"""
@@ -66,6 +67,7 @@ def configure():
     col = con[database][collection]
     return col
 
+
 def update(collection, hosts_groups):
     """Update the database to include each host supplied"""
     log.debug("in update")
@@ -81,7 +83,7 @@ def update(collection, hosts_groups):
         existing_groups.append(group['_id'])
 
     for group in hosts_groups:
-        #determine if our currently selected group exists already and delete 
+        #determine if our currently selected group exists already and delete
         #it if it does
         if group in existing_groups:
             #remove the group if it already exists, thus removing potentially
@@ -95,12 +97,10 @@ def update(collection, hosts_groups):
 
         #update the database with our findings
         collection.update(
-            {'_id': group}, 
+            {'_id': group},
             {"$set": {
                 'hosts': associated_hosts,
-                'groups': associated_groups
-                }
-            },
+                'groups': associated_groups}},
             upsert=True
         )
 
@@ -109,14 +109,25 @@ if __name__ == "__main__":
     import argparse
 
     cmd_parser = argparse.ArgumentParser(description='Add hosts to the database (does not do grouping).')
-    cmd_parser.add_argument('-f', '--file', dest='group_file', action='store',
-        help='Path to file containing grouping information', default=None)
-    cmd_parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='Enable debugging during execution', default=None)
+    cmd_parser.add_argument(
+        '-f',
+        '--file',
+        dest='group_file',
+        action='store',
+        help='Path to file containing grouping information',
+        default=None)
+    cmd_parser.add_argument(
+        '-d',
+        '--debug',
+        dest='debug',
+        action='store_true',
+        help='Enable debugging during execution',
+        default=None)
     args = cmd_parser.parse_args()
 
     if args.debug:
         log.setLevel(logging.DEBUG)
 
-    hosts_groups = eval( open(args.group_file).read())
+    hosts_groups = eval(open(args.group_file).read())
     ansible_collection = configure()
     update(ansible_collection, hosts_groups)

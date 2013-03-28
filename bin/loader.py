@@ -41,14 +41,15 @@ mongodb_host = parser.get('ansible-hosts', 'host')
 dbname = parser.get('ansible-hosts', 'database')
 collection_name = parser.get('ansible-hosts', 'collection')
 
-logging.basicConfig(level=logging.WARN,
-                    format='%(asctime)s %(levelname)s - %(message)s',
-                    datefmt='%y.%m.%d %H:%M:%S'
-                   )
+logging.basicConfig(
+    level=logging.WARN,
+    format='%(asctime)s %(levelname)s - %(message)s',
+    datefmt='%y.%m.%d %H:%M:%S')
 console = logging.StreamHandler(sys.stderr)
 console.setLevel(logging.WARN)
 logging.getLogger("ansible_mongo_hosts").addHandler(console)
 log = logging.getLogger("ansible_mongo_hosts")
+
 
 def configure():
     """Read configuration file and intialize connection to the mongodb instance"""
@@ -65,6 +66,7 @@ def configure():
     col = con[database][collection]
     return col
 
+
 def update(collection, all_hosts):
     """Update the database to include each host supplied"""
     log.debug("in update")
@@ -80,12 +82,10 @@ def update(collection, all_hosts):
     final_host_list = dict(zip(complete_list, complete_list)).keys()
 
     collection.update(
-        {'_id': 'all_hosts'}, 
+        {'_id': 'all_hosts'},
         {"$set": {
             'hosts': final_host_list,
-            'groups': ''
-            }
-        },
+            'groups': ''}},
         upsert=True
     )
 
@@ -94,10 +94,21 @@ if __name__ == "__main__":
     import argparse
 
     cmd_parser = argparse.ArgumentParser(description='Add hosts to the database (does not do grouping).')
-    cmd_parser.add_argument('-H', '--hosts', dest='host_list', action='append',
-        help='Space seperated list of hosts to add to the database', default=None,
+    cmd_parser.add_argument(
+        '-H',
+        '--hosts',
+        dest='host_list',
+        action='append',
+        help='Space seperated list of hosts to add to the database',
+        default=None,
         nargs='*')
-    cmd_parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='Enable debugging during execution', default=None)
+    cmd_parser.add_argument(
+        '-d',
+        '--debug',
+        dest='debug',
+        action='store_true',
+        help='Enable debugging during execution',
+        default=None)
     args = cmd_parser.parse_args()
 
     if args.debug:

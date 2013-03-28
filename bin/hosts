@@ -47,14 +47,15 @@ mongodb_host = parser.get('ansible-hosts', 'host')
 dbname = parser.get('ansible-hosts', 'database')
 collection_name = parser.get('ansible-hosts', 'collection')
 
-logging.basicConfig(level=logging.WARN,
-                    format='%(asctime)s %(levelname)s - %(message)s',
-                    datefmt='%y.%m.%d %H:%M:%S'
-                   )
+logging.basicConfig(
+    level=logging.WARN,
+    format='%(asctime)s %(levelname)s - %(message)s',
+    datefmt='%y.%m.%d %H:%M:%S')
 console = logging.StreamHandler(sys.stderr)
 console.setLevel(logging.WARN)
 logging.getLogger("ansible_mongo_hosts").addHandler(console)
 log = logging.getLogger("ansible_mongo_hosts")
+
 
 def configure():
     """Read configuration file and intialize connection to the mongodb instance"""
@@ -76,28 +77,30 @@ def configure():
         col = 'http://%s/%s/%s/' % (host, database, collection)
     return col
 
+
 def get_hosts_from_group(allGroups, addedGroups, groupName):
     """Return a list of all hosts from the supplied group it's suplimental groups"""
     log.debug("in get_host_from_group(%s, %s)" % (allGroups, groupName))
-    
+
     hosts = []
-    
+
     group = {}
     for g in allGroups:
         if g['_id'] == groupName:
             group = g
-    
+
     if not group:
-        return []    
-    
+        return []
+
     hosts.extend(group['hosts'])
-    
-    for subGroup in group['groups']: 
+
+    for subGroup in group['groups']:
         if subGroup not in addedGroups:
             addedGroups.append(subGroup)
             hosts.extend(get_hosts_from_group(allGroups, addedGroups, subGroup))
-   
+
     return hosts
+
 
 def hostlist(collection):
     """Grab all hosts/groups from the MongoDB"""
@@ -117,7 +120,7 @@ def hostlist(collection):
     hostlistdict = {}
     for group in all_documents:
         hostlistdict[group['_id']] = []
-    
+
     #populate the groups with hosts, tracking only 1 layer of groupings deep
     for group in all_documents:
         hosts = get_hosts_from_group(all_documents, [], group['_id'])
@@ -132,9 +135,20 @@ if __name__ == "__main__":
     import argparse
 
     cmd_parser = argparse.ArgumentParser(description='Add hosts to the database (does not do grouping).')
-    cmd_parser.add_argument('-l', '--list', dest='hostlist', action='store_true',
-        help='List all hosts', default=None)
-    cmd_parser.add_argument('-d', '--debug', dest='debug', action='store_true', help='Enable debugging during execution', default=None)
+    cmd_parser.add_argument(
+        '-l',
+        '--list',
+        dest='hostlist',
+        action='store_true',
+        help='List all hosts',
+        default=None)
+    cmd_parser.add_argument(
+        '-d',
+        '--debug',
+        dest='debug',
+        action='store_true',
+        help='Enable debugging during execution',
+        default=None)
     args = cmd_parser.parse_args()
 
     if args.debug:

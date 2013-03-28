@@ -19,16 +19,18 @@ dbpass = parser.get('zabbix', 'pass')
 dbname = parser.get('zabbix', 'name')
 con = None
 
+
 def connect_to_db():
     """Connect to the puppet-dashboard database"""
 
     try:
-        con = MySQLdb.connect(host=dbhost,user=dbuser,db=dbname)
+        con = MySQLdb.connect(host=dbhost, user=dbuser, db=dbname)
         return con
 
     except MySQLdb.Error, e:
         print "Error %d: %s" % (e.args[0], e.args[1])
         sys.exit(1)
+
 
 def list_hosts(conn):
     """List all hosts in the dabatase"""
@@ -47,6 +49,7 @@ def list_hosts(conn):
 
     return hostlist
 
+
 def list_host_variables(conn, host):
     """List all variables for the given host. NOTE: this doesn't currently do anything"""
 
@@ -55,8 +58,13 @@ def list_host_variables(conn, host):
 if __name__ == "__main__":
 
     cmd_parser = argparse.ArgumentParser(description='Return a filtered or full list of hosts in puppet-dashboard\'s database')
-    cmd_parser.add_argument('-l', '--list', dest='list_hosts', action='store_true',
-        default=False, help='Return variables for the given host')
+    cmd_parser.add_argument(
+        '-l',
+        '--list',
+        dest='list_hosts',
+        action='store_true',
+        default=False,
+        help='Return variables for the given host')
     args = cmd_parser.parse_args()
 
     dbcon = connect_to_db()
