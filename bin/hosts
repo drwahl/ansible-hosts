@@ -27,7 +27,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 import sys
 import logging
 import os
-from pymongo import Connection
+try:
+    from pymongo import Connection
+    pymongo_driver = True
+except ImportError:
+    import urllib2
+    pymongo_driver = False
 import json
 from ConfigParser import SafeConfigParser
 
@@ -61,9 +66,14 @@ def configure():
     log.debug('connecting to database name: %s' % database)
     collection = collection_name
     log.debug('using collection name: %s' % collection)
-    con = Connection(host)
-    log.debug('selecting database/collection: %s/%s' % (database, collection))
-    col = con[database][collection]
+    if pymongo_driver:
+        log.debug('using pymongo driver for communications')
+        con = Connection(host)
+        log.debug('selecting database/collection: %s/%s' % (database, collection))
+        col = con[database][collection]
+    else:
+        log.debug('using REST interface for communications')
+        col = 'http://%s/%s/%s/' % (host, database, collection)
     return col
 
 def get_hosts_from_group(allGroups, addedGroups, groupName):
@@ -93,7 +103,10 @@ def hostlist(collection):
     """Grab all hosts/groups from the MongoDB"""
     log.debug("in hostlist()")
 
-    cursor = collection.find()
+    if pymongo_driver:
+        cursor = collection.find()
+    else:
+        cursor = json.load(urllib2.urlopen(collection))['rows']
 
     #pull in our results
     all_documents = []
