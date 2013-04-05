@@ -93,9 +93,13 @@ def update(collection, hosts_groups):
         #prepare selectors for the hosts that are in the group and the groups
         #that make up this group
         associated_hosts = list(set(all_hosts) & set(hosts_groups[group]['hosts']))
+        log.debug("found the following hosts to be associated with group %s:\n%s" % (group, associated_hosts))
         associated_groups = hosts_groups[group]['groups']
+        log.debug("found the following groups to be associated with group %s:\n%s" % (group, associated_groups))
+        log.debug(associated_groups)
 
         #update the database with our findings
+        log.debug("updating group name \"%s\" with\nhosts:\n%s\ngroups:\n%s\n" % (group, associated_hosts, associated_groups))
         collection.update(
             {'_id': group},
             {"$set": {
