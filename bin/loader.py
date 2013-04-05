@@ -80,6 +80,7 @@ def update(collection, all_hosts):
     complete_list = current_hosts + all_hosts
 
     final_host_list = dict(zip(complete_list, complete_list)).keys()
+    log.debug("list of hosts to be added to \"all_hosts\": %s" % final_host_list)
 
     collection.update(
         {'_id': 'all_hosts'},
