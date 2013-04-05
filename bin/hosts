@@ -96,9 +96,12 @@ def get_hosts_from_group(allGroups, addedGroups, groupName):
 
     for subGroup in group['groups']:
         if subGroup not in addedGroups:
+            log.debug("expanding hosts from group \"%s\"" % subGroup)
             addedGroups.append(subGroup)
+            log.debug("found these hosts in group \"%s\": %s" % (subGroup, get_hosts_from_group(allGroups, addedGroups, subGroup)))
             hosts.extend(get_hosts_from_group(allGroups, addedGroups, subGroup))
 
+    log.debug("returning hosts: %s" % hosts)
     return hosts
 
 
