@@ -85,7 +85,7 @@ puppet-dashboard
 In order for ansible-hosts to be able to pull data from puppet-dashboard, the database must be accepting external connections (if the script is running remotely), and a user must exist that allows select on the table dashboard.nodes.  Use the following sql to create a user with these privileges:
 ```
 create user 'ansible';
-grant select on dashboard.nodes;
+grant select on dashboard.nodes to 'ansible';
 flush privileges;
 ```
 The exact query that is being run against this database is:
