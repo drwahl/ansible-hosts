@@ -17,6 +17,7 @@ dbhost = parser.get('zabbix', 'host')
 dbuser = parser.get('zabbix', 'user')
 dbpass = parser.get('zabbix', 'pass')
 dbname = parser.get('zabbix', 'name')
+dbvers = parser.get('zabbix', 'version')
 con = None
 
 
@@ -36,7 +37,11 @@ def list_hosts(conn):
     """List all hosts in the dabatase"""
 
     #conduct our query
-    conn.query("SELECT dns FROM hosts WHERE dns <>''")
+    if dbvers == 1.8:
+        conn.query("SELECT dns FROM hosts WHERE dns <>''")
+    else:
+        con.query("SELECT host FROM hosts WHERE status = 0 AND host != 'Zabbix server'")
+
     result = conn.store_result()
     #store our results locally
     raw_result = result.fetch_row(maxrows=0)
