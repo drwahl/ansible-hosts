@@ -102,7 +102,9 @@ create user 'ansible';
 grant select on 'zabbix.hosts' to 'ansible';
 flush privileges;
 ```
+
 The exact query that is being run against this database is:
 ```
-SELECT dns FROM hosts WHERE dns<>''
+SELECT dns FROM hosts WHERE dns<>''   # Zabbix 1.8
+SELECT host FROM hosts WHERE available > 0 AND host != 'Zabbix server'   # Zabbix 2.0
 ```
