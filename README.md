@@ -84,7 +84,7 @@ puppet-dashboard
 
 In order for ansible-hosts to be able to pull data from puppet-dashboard, the database must be accepting external connections (if the script is running remotely), and a user must exist that allows select on the table dashboard.nodes.  Use the following sql to create a user with these privileges:
 ```
-create user 'ansible';
+create user ansible;
 grant select on dashboard.nodes to 'ansible';
 flush privileges;
 ```
@@ -98,7 +98,7 @@ zabbix
 
 Similar to puppet-dashboard, ansible-hosts needs to be able to contact the zabbix database (likely remotely).  A user must exist in the database for ansible to use and that user must have select privs on the table zabbix.hosts. Use the following sql to create a user with these privileges;
 ```
-create user 'ansible';
+create user ansible;
 grant select on 'zabbix.hosts' to 'ansible';
 flush privileges;
 ```
