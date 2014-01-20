@@ -108,3 +108,4 @@ The exact query that is being run against this database is:
 SELECT dns FROM hosts WHERE dns<>''   # Zabbix 1.8
 SELECT host FROM hosts WHERE status = 0 AND host != 'Zabbix server'   # Zabbix 2.0
 ```
+
